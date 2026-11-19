@@ -12,7 +12,16 @@ export function Report({ result }: { result: ScanResult }) {
     <section className="report" aria-label="Scan report">
       <p className="report-target">
         <span className="dim">scanned</span> {result.target}{' '}
-        <span className="dim">· {result.scanned.length} files · {new Date(result.scannedAt).toLocaleTimeString()}</span>
+        <span className="dim">· {plural(result.scanned.length, 'file')} · {new Date(result.scannedAt).toLocaleTimeString()}</span>
+      </p>
+
+      <p className="tally">
+        {/* a zero shouldn't shout in alarm red */}
+        <span className={counts.fail ? 's-fail' : 'dim'}>{plural(counts.fail, 'red flag')}</span> ·{' '}
+        <span className={counts.warn ? 's-warn' : 'dim'}>{plural(counts.warn, 'warning')}</span> ·{' '}
+        <span className={counts.manual ? 's-manual' : 'dim'}>{counts.manual} to check by hand</span> ·{' '}
+        <span className={counts.pass ? 's-pass' : 'dim'}>{counts.pass} clear</span>
+        <span className="dim"> · no guarantees, see notes</span>
       </p>
 
       <ol className="checks" role="list">
@@ -21,13 +30,6 @@ export function Report({ result }: { result: ScanResult }) {
         ))}
       </ol>
 
-      <p className="tally">
-        <span className="s-fail">{plural(counts.fail, 'red flag')}</span> ·{' '}
-        <span className="s-warn">{plural(counts.warn, 'warning')}</span> ·{' '}
-        <span className="s-manual">{counts.manual} to check by hand</span> ·{' '}
-        <span className="s-pass">{counts.pass} clear</span>
-        <span className="dim"> · no guarantees, see notes</span>
-      </p>
 
       {prompt && <PromptBox prompt={prompt} />}
 

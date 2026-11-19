@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="880" height="300" viewBox="0 0 880 300" role="img" aria-label="dontsueme: a linter for lawsuits. Sample output: 1 red flag, 2 warnings.">
   <style>
-    text { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; fill: #e8e6df; }
-    .dim { fill: #8b8a84; }
+    text { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; fill: #e6e7e9; }
+    .dim { fill: #8d9096; }
     .pad { fill: #f2d64b; }
     .fail { fill: #ff6b5e; font-weight: 700; }
     .warn { fill: #f0a63a; font-weight: 700; }
@@ -9,12 +9,12 @@
     .rule { font-weight: 700; }
     .big { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
   </style>
-  <rect width="880" height="300" rx="10" fill="#121211"/>
-  <circle cx="24" cy="22" r="5" fill="#3a3a36"/><circle cx="42" cy="22" r="5" fill="#3a3a36"/><circle cx="60" cy="22" r="5" fill="#3a3a36"/>
+  <rect width="880" height="300" rx="10" fill="#111214"/>
+  <circle cx="24" cy="22" r="5" fill="#3a3c41"/><circle cx="42" cy="22" r="5" fill="#3a3c41"/><circle cx="60" cy="22" r="5" fill="#3a3c41"/>
 
   <text x="28" y="74" class="big"><tspan class="pad">§</tspan> dontsueme</text>
   <rect x="234" y="50" width="250" height="32" fill="#f2d64b"/>
-  <text x="246" y="73" style="fill:#121211;font-weight:700;font-size:17px">a linter for lawsuits</text>
+  <text x="246" y="73" style="fill:#111214;font-weight:700;font-size:17px">a linter for lawsuits</text>
 
   <text x="28" y="122"><tspan class="pad">$</tspan> dontsueme your-weekend-app.vercel.app</text>
   <text x="28" y="156"><tspan class="fail">✖</tspan>  <tspan class="rule">gdpr/google-fonts</tspan>    <tspan class="dim">fonts.googleapis.com in /index.html</tspan></text>
