@@ -57,7 +57,7 @@ flowchart LR
 
 - **No database, no accounts, nothing stored.** One function (`api/scan.ts`) fetches your page and returns JSON.
 - **Safe to point at the internet.** The fetcher only allows http/https on ports 80/443. It rejects private, loopback, link-local and cloud-metadata addresses *at connect time* (so DNS rebinding doesn't work), re-checks every redirect, and caps time, size and decompressed bytes.
-- **It eats its own cooking.** `test/dogfood.test.ts` runs all six rules against our own production build, and the build fails if our site trips one. No Google Fonts (JetBrains Mono is self-hosted), no analytics, no cookies.
+- **It eats its own cooking.** `test/dogfood.test.ts` runs all six rules against our own production build, and the build fails if our site trips one. No Google Fonts (JetBrains Mono is self-hosted), no cookies, and the only analytics is cookieless [GoatCounter](https://www.goatcounter.com) (page views only, no IPs stored, nothing stored on the device).
 
 ## What it can't do
 

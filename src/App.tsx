@@ -118,8 +118,16 @@ export default function App() {
           <summary>privacy &amp; fair use</summary>
           <ul>
             <li>
-              No accounts, no cookies, no analytics, no session replay. Fonts are served from this domain. We do not store the URLs
-              you scan or the results.
+              No accounts, no cookies, no session replay. Fonts are served from this domain. We do not store the URLs you scan or
+              the results.
+            </li>
+            <li>
+              We count page views with{' '}
+              <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noreferrer">
+                GoatCounter
+              </a>
+              . It sets no cookies, stores nothing on your device and keeps no profile of you. It records the page, referrer, browser,
+              screen size and country, not your IP address.
             </li>
             <li>
               The site runs on Vercel. Like any host, Vercel processes your IP address and request metadata to deliver the page and
