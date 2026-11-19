@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { CheckResult, ScanResult, Status } from '../../server/types.ts'
 import { fixPrompt } from '../lib/prompt.ts'
 
@@ -9,13 +9,13 @@ export function Report({ result }: { result: ScanResult }) {
   const { counts } = result
   const prompt = fixPrompt(result)
   return (
-    <section className="report" aria-live="polite">
+    <section className="report" aria-label="Scan report">
       <p className="report-target">
         <span className="dim">scanned</span> {result.target}{' '}
         <span className="dim">· {result.scanned.length} files · {new Date(result.scannedAt).toLocaleTimeString()}</span>
       </p>
 
-      <ol className="checks">
+      <ol className="checks" role="list">
         {result.checks.map((c, i) => (
           <Check key={c.id} check={c} index={i} />
         ))}
@@ -83,22 +83,31 @@ function Check({ check: c, index }: { check: CheckResult; index: number }) {
 }
 
 function PromptBox({ prompt }: { prompt: string }) {
-  const [copied, setCopied] = useState(false)
+  // One element is both the visible feedback and the live region, for success and failure.
+  const [status, setStatus] = useState<{ text: string; failed: boolean }>({ text: '', failed: false })
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const copy = async () => {
+    clearTimeout(timer.current)
+    let next: { text: string; failed: boolean }
     try {
       await navigator.clipboard.writeText(prompt)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      next = { text: 'copied', failed: false }
     } catch {
-      setCopied(false) // clipboard blocked; the text is still selectable below
+      next = { text: 'copy failed, select the text below', failed: true } // clipboard blocked or insecure context
     }
+    setStatus({ text: '', failed: false })
+    requestAnimationFrame(() => setStatus(next)) // re-announce on repeat clicks
+    timer.current = setTimeout(() => setStatus({ text: '', failed: false }), 2500)
   }
   return (
     <div className="prompt-box">
       <div className="prompt-head">
         <span>fix it with Claude Code: paste this into your repo session</span>
+        <span className="copy-status" role="status" data-failed={status.failed || undefined}>
+          {status.text}
+        </span>
         <button type="button" onClick={copy}>
-          {copied ? 'copied' : 'copy prompt'}
+          copy prompt
         </button>
       </div>
       <pre tabIndex={0}>{prompt}</pre>

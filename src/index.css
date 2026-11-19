@@ -19,7 +19,7 @@
 }
 
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme='dark']) {
+  :root {
     --ink: #1d1d1b;
     --dim: #6b6a64;
     --rule: #dcdad2;
@@ -48,6 +48,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font: 15px/1.6 var(--mono);
+  font-size-adjust: from-font; /* fallback mono matches JetBrains Mono's x-height while it loads */
 }
 
 a {
@@ -130,6 +131,7 @@ mark {
   border: 0;
   color: var(--ink);
   font: inherit;
+  font-size: max(1rem, 1em); /* under 16px makes iOS zoom on focus */
   padding: 8px 0;
   outline: none;
 }
@@ -143,7 +145,13 @@ button {
   color: var(--pad-ink);
   border: 0;
   padding: 8px 16px;
+  min-block-size: 2.75rem;
   cursor: pointer;
+}
+@media (pointer: coarse) {
+  button {
+    min-block-size: 3rem;
+  }
 }
 button:disabled {
   opacity: 0.6;
@@ -190,8 +198,10 @@ pre:focus-visible {
   margin: 2px 0;
 }
 .cursor {
-  animation: blink 1s steps(1) infinite;
   color: var(--pad-text);
+  @media (prefers-reduced-motion: no-preference) {
+    animation: blink 1s steps(1) infinite;
+  }
 }
 @keyframes blink {
   50% {
@@ -215,7 +225,9 @@ pre:focus-visible {
 .check {
   padding: 14px 0;
   border-top: 1px solid var(--rule);
-  animation: line-in 0.25s ease-out both;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: line-in 0.25s ease-out both;
+  }
 }
 @keyframes line-in {
   from {
@@ -309,6 +321,13 @@ span.s-manual {
   color: var(--dim);
   font-size: 13px;
 }
+.copy-status {
+  margin-inline-start: auto;
+  color: var(--pass);
+}
+.copy-status[data-failed] {
+  color: var(--fail);
+}
 .prompt-box pre {
   margin: 0;
   padding: 14px;
@@ -343,10 +362,13 @@ footer p {
 
 .sr-only {
   position: absolute;
+  clip-path: inset(50%);
+  overflow: hidden;
   width: 1px;
   height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
+  margin: -1px;
+  padding: 0;
+  border: 0;
   white-space: nowrap;
 }
 
@@ -371,9 +393,3 @@ footer p {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .check,
-  .cursor {
-    animation: none;
-  }
-}

@@ -48,10 +48,13 @@ export default function App() {
 
         <form className="prompt" onSubmit={run}>
           <label htmlFor="url" className="ps1">
-            $ dontsueme
+            $ dontsueme<span className="sr-only"> (website URL to scan)</span>
           </label>
           <input
             id="url"
+            name="url"
+            enterKeyHint="go"
+            autoCorrect="off"
             type="text" // not type=url: "example.com" without a scheme is fine, the API adds https://
             inputMode="url"
             autoComplete="url"
@@ -70,7 +73,8 @@ export default function App() {
         {state.kind === 'idle' && (
           <section className="rules" aria-label="What gets checked">
             <p className="dim">rules</p>
-            <ol>
+            {/* role=list: Safari drops list semantics when list-style is none */}
+            <ol role="list">
               {RULES.map(([id, what, law]) => (
                 <li key={id}>
                   <code className="rule">{id}</code>
@@ -83,7 +87,7 @@ export default function App() {
         )}
 
         {state.kind === 'busy' && (
-          <div className="busy" role="status">
+          <div className="busy">
             <p>→ fetching {state.url}</p>
             <p>→ reading HTML, stylesheets and scripts</p>
             <p>→ running 6 rules<span className="cursor">▍</span></p>
@@ -97,6 +101,13 @@ export default function App() {
         )}
 
         {state.kind === 'done' && <Report result={state.result} />}
+
+        {/* One short announcement instead of reading the whole report aloud */}
+        <p className="sr-only" role="status">
+          {state.kind === 'busy' && 'Scanning…'}
+          {state.kind === 'done' &&
+            `Scan finished: ${state.result.counts.fail} red flags, ${state.result.counts.warn} warnings, ${state.result.counts.manual} to check by hand.`}
+        </p>
       </main>
 
       <footer>
